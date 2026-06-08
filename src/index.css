@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0F172A;
+  color: #FFFFFF;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+:root {
+  --primary: #0F172A;
+  --secondary: #1E293B;
+  --accent: #F59E0B;
+  --success: #22C55E;
+  --text: #FFFFFF;
+  --muted: #94A3B8;
+  --border: #2a3a50;
+  --card: #1E293B;
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; }

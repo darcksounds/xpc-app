@@ -4,7 +4,7 @@ export async function getProducts() {
   return client.fetch(`
     *[_type == "product"] {
       _id, name, brand, price, inStock,
-      category->{name, slug},
+      category->{name, "slug": slug.current},
       specs,
       "images": images[].asset->url
     }
@@ -33,7 +33,7 @@ export async function getProductById(id) {
   return client.fetch(`
     *[_type == "product" && _id == $id][0] {
       _id, name, brand, price, inStock,
-      category->{name, slug},
+      category->{name, "slug": slug.current},
       specs,
       "images": images[].asset->url
     }

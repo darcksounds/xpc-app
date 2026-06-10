@@ -7,22 +7,34 @@ import Configurator from './pages/Configurator'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
+import { CartProvider } from './context/CartContext'
 
 function App() {
   return (
     <BrowserRouter>
-      <div style={{background:'#0a0a0f', minHeight:'100vh'}}>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/parts" element={<Parts />} />
-          <Route path="/configurator" element={<Configurator />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-        </Routes>
-        <Footer />
-      </div>
+      <CartProvider>
+        <div style={{
+          background:'#0F172A',
+          minHeight:'100vh',
+          display:'flex',
+          flexDirection:'column'
+        }}>
+          <Navbar />
+          <div style={{flex:1, display:'flex', flexDirection:'column'}}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/parts" element={<Parts />} />
+              <Route path="/configurator" element={<Configurator />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+            </Routes>
+          </div>
+          <Footer />
+        </div>
+      </CartProvider>
     </BrowserRouter>
   )
 }

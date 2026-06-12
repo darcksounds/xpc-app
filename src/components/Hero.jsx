@@ -15,75 +15,75 @@ function Hero() {
 
   return (
     <div style={{
-      position:'relative',
+      position: 'relative',
       padding: isMobile ? '3rem 1.5rem' : '6rem 2rem 5rem',
-      overflow:'hidden',
-      backgroundImage:'url(/background.png)',
-      backgroundSize:'cover',
-      backgroundPosition:'center',
-      backgroundRepeat:'no-repeat',
+      overflow: 'hidden',
+      backgroundImage: 'url(/background.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
     }}>
       <div style={{
-        position:'absolute', inset:0,
-        background:'linear-gradient(to right, #0F172Ada 40%, #0F172A40 100%)'
-      }}/>
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to right, #0F172Ada 40%, #0F172A40 100%)'
+      }} />
       <div style={{
-        position:'absolute', inset:0,
-        backgroundImage:'linear-gradient(#ffffff03 1px, transparent 1px), linear-gradient(90deg, #ffffff03 1px, transparent 1px)',
-        backgroundSize:'40px 40px'
-      }}/>
+        position: 'absolute', inset: 0,
+        backgroundImage: 'linear-gradient(#ffffff03 1px, transparent 1px), linear-gradient(90deg, #ffffff03 1px, transparent 1px)',
+        backgroundSize: '40px 40px'
+      }} />
 
       <div style={{
-        position:'relative',
-        maxWidth:'1400px',
-        margin:'0 auto',
+        position: 'relative',
+        maxWidth: '1400px',
+        margin: '0 auto',
         paddingLeft: isMobile ? '0' : '2rem',
-        display:'flex',
-        alignItems:'center',
-        justifyContent:'flex-start',
-        gap:'4rem',
-        flexWrap:'wrap'
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        gap: '4rem',
+        flexWrap: 'wrap'
       }}>
-        <div style={{textAlign:'left', maxWidth:'560px'}}>
+        <div style={{ textAlign: 'left', maxWidth: '560px' }}>
           <div style={{
-            display:'inline-block', padding:'5px 14px',
-            background:'#F59E0B15', border:'1px solid #F59E0B30',
-            borderRadius:'20px', fontSize:'12px', color:'#F59E0B',
-            letterSpacing:'1px', marginBottom:'1.5rem'
+            display: 'inline-block', padding: '5px 14px',
+            background: '#F59E0B15', border: '1px solid #F59E0B30',
+            borderRadius: '20px', fontSize: '12px', color: '#F59E0B',
+            letterSpacing: '1px', marginBottom: '1.5rem'
           }}>
             ⚡ კომპიუტერები და კომპიუტერის ნაწილები
           </div>
 
           <h1 style={{
             fontSize: isMobile ? '36px' : '64px',
-            fontWeight:'800', lineHeight:1,
-            color:'#fff', marginBottom:'1rem', letterSpacing:'2px'
+            fontWeight: '800', lineHeight: 1,
+            color: '#fff', marginBottom: '1rem', letterSpacing: '2px'
           }}>
-            ააწყვე შენი<br/>
-            <span style={{color:'#F59E0B'}}>სრულყოფილი</span> PC
+            ააწყვე შენი<br />
+            <span style={{ color: '#F59E0B' }}>სრულყოფილი</span> PC
           </h1>
 
           {!isSmall && (
             <p style={{
-              fontSize:'16px', color:'#94A3B8',
-              margin:'0 0 2.5rem', lineHeight:'1.7'
+              fontSize: '16px', color: '#94A3B8',
+              margin: '0 0 2.5rem', lineHeight: '1.7'
             }}>
               შეარჩიე სათანადო კომპონენტები და ავტომატური კონფიგურაციების შემოწმებით ააწყვე შენი სოცნებიური კომპიუტერი
             </p>
           )}
 
-          {isSmall && <div style={{marginBottom:'1.5rem'}}/>}
+          {isSmall && <div style={{ marginBottom: '1.5rem' }} />}
 
-          <div style={{display:'flex', gap:'12px', flexWrap:'wrap'}}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <a href="/configurator" style={{
-              padding:'13px 28px', background:'#F59E0B',
-              borderRadius:'8px', color:'#000', fontWeight:'700',
-              fontSize:'14px', textDecoration:'none', letterSpacing:'.5px'
+              padding: '13px 28px', background: '#F59E0B',
+              borderRadius: '8px', color: '#000', fontWeight: '700',
+              fontSize: '14px', textDecoration: 'none', letterSpacing: '.5px'
             }}>⚙ კონფიგურატორი</a>
             <a href="/parts" style={{
-              padding:'13px 28px', background:'transparent',
-              border:'1px solid #ffffff30', borderRadius:'8px',
-              color:'#fff', fontSize:'14px', textDecoration:'none'
+              padding: '13px 28px', background: 'transparent',
+              border: '1px solid #ffffff30', borderRadius: '8px',
+              color: '#fff', fontSize: '14px', textDecoration: 'none'
             }}>ყველა ნაწილი →</a>
           </div>
         </div>

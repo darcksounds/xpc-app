@@ -3,14 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getProductById } from '../sanity/queries'
 import { useCart } from '../context/CartContext'
 
-
-
 function ProductDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { addToCart } = useCart()
   const [product, setProduct] = useState(null)
   const [currentImg, setCurrentImg] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [added, setAdded] = useState(false)
 
   useEffect(() => {
     getProductById(id).then(data => {
@@ -18,6 +18,12 @@ function ProductDetail() {
       setLoading(false)
     })
   }, [id])
+
+  const handleAddToCart = () => {
+    addToCart(product)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
+  }
 
   if (loading) return (
     <div style={{
@@ -103,20 +109,20 @@ function ProductDetail() {
             </div>
 
             {product.inStock && (
-              <button style={{
-                width:'100%', padding:'14px', background:'#F59E0B',
-                border:'none', borderRadius:'10px', color:'#000',
-                fontSize:'16px', fontWeight:'700', cursor:'pointer',
-                marginBottom:'12px', transition:'background .2s'
-              }}
-                onMouseEnter={e => e.currentTarget.style.background = '#FBBF24'}
-                onMouseLeave={e => e.currentTarget.style.background = '#F59E0B'}
+              <button
+                onClick={handleAddToCart}
+                style={{
+                  width:'100%', padding:'14px',
+                  background: added ? '#22C55E' : '#F59E0B',
+                  border:'none', borderRadius:'10px', color:'#000',
+                  fontSize:'16px', fontWeight:'700', cursor:'pointer',
+                  marginBottom:'12px', transition:'background .3s'
+                }}
               >
-                🛒 კალათაში დამატება
+                {added ? '✓ დაემატა კალათაში!' : '🛒 კალათაში დამატება'}
               </button>
             )}
 
-            {/* კატეგორია */}
             {product.category && (
               <div style={{
                 display:'flex', alignItems:'center', gap:'8px',
@@ -128,7 +134,6 @@ function ProductDetail() {
               </div>
             )}
 
-            {/* სპეციფიკაციები */}
             {product.specs && Object.values(product.specs).some(Boolean) && (
               <div style={{
                 background:'#1E293B', border:'1px solid #2a3a50',

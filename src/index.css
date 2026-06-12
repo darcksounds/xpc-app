@@ -7,19 +7,26 @@
 body {
   background: #0F172A;
   color: #FFFFFF;
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-:root {
-  --primary: #0F172A;
-  --secondary: #1E293B;
-  --accent: #F59E0B;
-  --success: #22C55E;
-  --text: #FFFFFF;
-  --muted: #94A3B8;
-  --border: #2a3a50;
-  --card: #1E293B;
+  font-family: system-ui, sans-serif;
 }
 
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #1E293B; }
+::-webkit-scrollbar-thumb { background: #F59E0B; border-radius: 3px; }
+
+/* რესპონსიული */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: flex !important; }
+}
+
+@media (min-width: 769px) {
+  .show-mobile { display: none !important; }
+}

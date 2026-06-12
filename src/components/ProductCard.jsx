@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
 
-function ProductCard({ product, onAddToCart }) {
+function ProductCard({ product }) {
   const [currentImg, setCurrentImg] = useState(0)
   const navigate = useNavigate()
+  const { addToCart } = useCart()
 
   return (
     <div
@@ -71,7 +73,7 @@ function ProductCard({ product, onAddToCart }) {
           </div>
           {product.inStock && (
             <button
-              onClick={e => { e.stopPropagation(); onAddToCart && onAddToCart(product) }}
+              onClick={e => { e.stopPropagation(); addToCart(product) }}
               style={{
                 width:'32px', height:'32px', background:'#F59E0B',
                 borderRadius:'6px', border:'none', color:'#000',

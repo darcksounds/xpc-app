@@ -1,9 +1,17 @@
+import { useState, useEffect } from 'react'
 import { useCart } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 
 function Cart() {
   const { cart, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart()
   const navigate = useNavigate()
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+  useEffect(() => {
+    const handle = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handle)
+    return () => window.removeEventListener('resize', handle)
+  }, [])
 
   if (cart.length === 0) return (
     <div style={{
@@ -28,12 +36,12 @@ function Cart() {
 
   return (
     <div style={{flex:1, background:'#0F172A', padding:'2rem 0'}}>
-      <div style={{maxWidth:'1400px', margin:'0 auto', padding:'0 2rem'}}>
+      <div style={{maxWidth:'1400px', margin:'0 auto', padding:'0 1.5rem'}}>
         <div style={{
           display:'flex', alignItems:'center', justifyContent:'space-between',
-          marginBottom:'2rem'
+          marginBottom:'1.5rem', flexWrap:'wrap', gap:'10px'
         }}>
-          <h1 style={{fontSize:'28px', fontWeight:'700', color:'#fff'}}>კალათა</h1>
+          <h1 style={{fontSize: isMobile ? '22px' : '28px', fontWeight:'700', color:'#fff'}}>კალათა</h1>
           <button
             onClick={clearCart}
             style={{
@@ -44,19 +52,27 @@ function Cart() {
           >გასუფთავება</button>
         </div>
 
-        <div style={{display:'grid', gridTemplateColumns:'1fr 340px', gap:'2rem'}}>
+        <div style={{
+          display:'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 340px',
+          gap:'2rem'
+        }}>
 
           {/* პროდუქტები */}
           <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
             {cart.map(item => (
               <div key={item._id} style={{
                 background:'#1E293B', border:'1px solid #2a3a50',
-                borderRadius:'12px', padding:'1.5rem',
-                display:'flex', alignItems:'center', gap:'1.5rem'
+                borderRadius:'12px', padding: isMobile ? '1rem' : '1.5rem',
+                display:'flex', alignItems:'center',
+                gap: isMobile ? '10px' : '1.5rem',
+                flexWrap: isMobile ? 'wrap' : 'nowrap'
               }}>
                 <div style={{
-                  width:'80px', height:'80px', borderRadius:'8px',
-                  background:'#0F172A', overflow:'hidden', flexShrink:0
+                  width: isMobile ? '60px' : '80px',
+                  height: isMobile ? '60px' : '80px',
+                  borderRadius:'8px', background:'#0F172A',
+                  overflow:'hidden', flexShrink:0
                 }}>
                   {item.images?.[0]
                     ? <img src={item.images[0]} alt={item.name}
@@ -65,34 +81,37 @@ function Cart() {
                   }
                 </div>
 
-                <div style={{flex:1}}>
+                <div style={{flex:1, minWidth:0}}>
                   <div style={{fontSize:'12px', color:'#F59E0B', marginBottom:'4px'}}>{item.brand}</div>
-                  <div style={{fontSize:'15px', fontWeight:'600', color:'#fff', marginBottom:'8px'}}>{item.name}</div>
-                  <div style={{fontSize:'18px', fontWeight:'700', color:'#fff'}}>
+                  <div style={{
+                    fontSize: isMobile ? '13px' : '15px',
+                    fontWeight:'600', color:'#fff', marginBottom:'6px',
+                    overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'
+                  }}>{item.name}</div>
+                  <div style={{fontSize:'16px', fontWeight:'700', color:'#fff'}}>
                     {(item.price * item.quantity).toFixed(2)} ₾
                   </div>
                 </div>
 
-                {/* რაოდენობა */}
-                <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'6px', flexShrink:0}}>
                   <button
                     onClick={() => updateQuantity(item._id, item.quantity - 1)}
                     style={{
-                      width:'32px', height:'32px', borderRadius:'6px',
+                      width:'30px', height:'30px', borderRadius:'6px',
                       background:'#0F172A', border:'1px solid #2a3a50',
-                      color:'#fff', fontSize:'18px', cursor:'pointer'
+                      color:'#fff', fontSize:'16px', cursor:'pointer'
                     }}
                   >−</button>
                   <span style={{
-                    width:'32px', textAlign:'center',
-                    fontSize:'15px', fontWeight:'600', color:'#fff'
+                    width:'28px', textAlign:'center',
+                    fontSize:'14px', fontWeight:'600', color:'#fff'
                   }}>{item.quantity}</span>
                   <button
                     onClick={() => updateQuantity(item._id, item.quantity + 1)}
                     style={{
-                      width:'32px', height:'32px', borderRadius:'6px',
+                      width:'30px', height:'30px', borderRadius:'6px',
                       background:'#0F172A', border:'1px solid #2a3a50',
-                      color:'#fff', fontSize:'18px', cursor:'pointer'
+                      color:'#fff', fontSize:'16px', cursor:'pointer'
                     }}
                   >+</button>
                 </div>
@@ -101,8 +120,9 @@ function Cart() {
                   onClick={() => removeFromCart(item._id)}
                   style={{
                     background:'transparent', border:'1px solid #ef444430',
-                    color:'#ef4444', width:'36px', height:'36px',
-                    borderRadius:'8px', cursor:'pointer', fontSize:'16px'
+                    color:'#ef4444', width:'32px', height:'32px',
+                    borderRadius:'8px', cursor:'pointer', fontSize:'14px',
+                    flexShrink:0
                   }}
                 >✕</button>
               </div>
@@ -110,7 +130,7 @@ function Cart() {
           </div>
 
           {/* ჯამი */}
-          <div style={{position:'sticky', top:'90px', alignSelf:'flex-start'}}>
+          <div style={{position: isMobile ? 'static' : 'sticky', top:'90px', alignSelf:'flex-start'}}>
             <div style={{
               background:'#1E293B', border:'1px solid #2a3a50',
               borderRadius:'12px', padding:'1.5rem'
@@ -122,10 +142,12 @@ function Cart() {
               {cart.map(item => (
                 <div key={item._id} style={{
                   display:'flex', justifyContent:'space-between',
-                  padding:'6px 0', fontSize:'13px'
+                  padding:'6px 0', fontSize:'13px', gap:'8px'
                 }}>
-                  <span style={{color:'#94A3B8'}}>{item.name.slice(0,25)}... x{item.quantity}</span>
-                  <span style={{color:'#fff'}}>{(item.price * item.quantity).toFixed(2)} ₾</span>
+                  <span style={{color:'#94A3B8', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                    {item.name.slice(0,20)}... x{item.quantity}
+                  </span>
+                  <span style={{color:'#fff', flexShrink:0}}>{(item.price * item.quantity).toFixed(2)} ₾</span>
                 </div>
               ))}
 

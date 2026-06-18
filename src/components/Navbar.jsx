@@ -1,12 +1,19 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const { totalCount } = useCart()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+  useEffect(() => {
+    const handle = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handle)
+    return () => window.removeEventListener('resize', handle)
+  }, [])
 
   const links = [
     { to: '/', label: 'მთავარი' },
@@ -18,12 +25,14 @@ function Navbar() {
 
   return (
     <div style={{
-      background: '#1E293B',
-      borderBottom: '1px solid #2a3a50',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100
-    }}>
+  background: '#1E293B',
+  borderBottom: '1px solid #2a3a50',
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 100
+}}>
       <nav style={{
         display: 'flex',
         alignItems: 'center',
@@ -38,22 +47,21 @@ function Navbar() {
         </Link>
 
         {/* desktop links */}
-        <div style={{
-          display: 'flex', gap: '4px',
-          '@media (max-width: 768px)': { display: 'none' }
-        }} className="hide-mobile">
-          {links.map(link => (
-            <Link key={link.to} to={link.to} style={{
-              padding: '10px 16px', fontSize: '15px', textDecoration: 'none',
-              color: location.pathname === link.to ? '#fff' : '#94A3B8',
-              background: location.pathname === link.to ? '#ffffff08' : 'transparent',
-              borderRadius: '8px', transition: 'all .2s',
-              fontWeight: location.pathname === link.to ? '600' : '400',
-            }}>
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        {!isMobile && (
+          <div style={{ display: 'flex', gap: '4px' }}>
+            {links.map(link => (
+              <Link key={link.to} to={link.to} style={{
+                padding: '10px 16px', fontSize: '15px', textDecoration: 'none',
+                color: location.pathname === link.to ? '#fff' : '#94A3B8',
+                background: location.pathname === link.to ? '#ffffff08' : 'transparent',
+                borderRadius: '8px', transition: 'all .2s',
+                fontWeight: location.pathname === link.to ? '600' : '400',
+              }}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div onClick={() => navigate('/cart')} style={{
@@ -63,7 +71,7 @@ function Navbar() {
             color: '#F59E0B', fontSize: '15px', cursor: 'pointer', fontWeight: '500'
           }}>
             🛒
-            <span className="hide-mobile">კალათა</span>
+            {!isMobile && <span>კალათა</span>}
             <div style={{
               background: '#F59E0B', color: '#000', borderRadius: '50%',
               width: '22px', height: '22px', fontSize: '12px', fontWeight: '700',
@@ -72,21 +80,21 @@ function Navbar() {
           </div>
 
           {/* burger */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{
-              display: 'none',
-              background: 'transparent', border: '1px solid #2a3a50',
-              borderRadius: '8px', padding: '8px', color: '#fff',
-              fontSize: '20px', cursor: 'pointer'
-            }}
-            className="show-mobile"
-          >☰</button>
+          {isMobile && (
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              style={{
+                background: 'transparent', border: '1px solid #2a3a50',
+                borderRadius: '8px', padding: '8px 12px', color: '#fff',
+                fontSize: '20px', cursor: 'pointer'
+              }}
+            >{menuOpen ? '✕' : '☰'}</button>
+          )}
         </div>
       </nav>
 
       {/* mobile menu */}
-      {menuOpen && (
+      {isMobile && menuOpen && (
         <div style={{
           background: '#1E293B', borderTop: '1px solid #2a3a50',
           padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '4px'

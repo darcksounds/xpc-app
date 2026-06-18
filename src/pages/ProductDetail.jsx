@@ -11,12 +11,16 @@ function ProductDetail() {
   const [currentImg, setCurrentImg] = useState(0)
   const [loading, setLoading] = useState(true)
   const [added, setAdded] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
   useEffect(() => {
     getProductById(id).then(data => {
       setProduct(data)
       setLoading(false)
     })
+    const handle = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handle)
+    return () => window.removeEventListener('resize', handle)
   }, [id])
 
   const handleAddToCart = () => {
@@ -41,19 +45,24 @@ function ProductDetail() {
 
   return (
     <div style={{flex:1, background:'#0F172A', padding:'2rem 0'}}>
-      <div style={{maxWidth:'1400px', margin:'0 auto', padding:'0 2rem'}}>
+      <div style={{maxWidth:'1400px', margin:'0 auto', padding:'0 1.5rem'}}>
         <button onClick={() => navigate(-1)} style={{
           background:'transparent', border:'1px solid #2a3a50',
           color:'#94A3B8', padding:'8px 16px', borderRadius:'8px',
-          cursor:'pointer', marginBottom:'2rem', fontSize:'13px'
+          cursor:'pointer', marginBottom:'1.5rem', fontSize:'13px'
         }}>← უკან</button>
 
-        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'3rem'}}>
+        <div style={{
+          display:'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr',
+          gap: isMobile ? '1.5rem' : '3rem'
+        }}>
 
           {/* ფოტოები */}
           <div>
             <div style={{
-              height:'420px', background:'#1E293B', borderRadius:'12px',
+              height: isMobile ? '280px' : '420px',
+              background:'#1E293B', borderRadius:'12px',
               overflow:'hidden', marginBottom:'12px', position:'relative',
               border:'1px solid #2a3a50'
             }}>
@@ -73,7 +82,7 @@ function ProductDetail() {
                   <img key={i} src={img} alt={i}
                     onClick={() => setCurrentImg(i)}
                     style={{
-                      width:'80px', height:'80px', objectFit:'cover',
+                      width:'70px', height:'70px', objectFit:'cover',
                       borderRadius:'8px', cursor:'pointer', flexShrink:0,
                       border: i === currentImg ? '2px solid #F59E0B' : '2px solid #2a3a50',
                       transition:'border .2s'
@@ -89,7 +98,10 @@ function ProductDetail() {
             <div style={{fontSize:'13px', color:'#F59E0B', letterSpacing:'1px', marginBottom:'8px'}}>
               {product.brand}
             </div>
-            <h1 style={{fontSize:'28px', fontWeight:'700', color:'#fff', marginBottom:'16px', lineHeight:1.3}}>
+            <h1 style={{
+              fontSize: isMobile ? '20px' : '28px',
+              fontWeight:'700', color:'#fff', marginBottom:'16px', lineHeight:1.3
+            }}>
               {product.name}
             </h1>
 
@@ -99,12 +111,15 @@ function ProductDetail() {
               border: `1px solid ${product.inStock ? '#22C55E40' : '#ef444440'}`,
               borderRadius:'20px', fontSize:'12px',
               color: product.inStock ? '#22C55E' : '#ef4444',
-              marginBottom:'24px', alignSelf:'flex-start'
+              marginBottom:'20px', alignSelf:'flex-start'
             }}>
               {product.inStock ? '✓ მარაგშია' : '✗ მარაგი ამოიწურა'}
             </div>
 
-            <div style={{fontSize:'42px', fontWeight:'800', color:'#fff', marginBottom:'24px'}}>
+            <div style={{
+              fontSize: isMobile ? '32px' : '42px',
+              fontWeight:'800', color:'#fff', marginBottom:'20px'
+            }}>
               {product.price} <span style={{fontSize:'20px', color:'#94A3B8', fontWeight:'400'}}>₾</span>
             </div>
 

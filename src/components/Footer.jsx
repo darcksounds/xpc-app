@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useTheme } from '../context/ThemeContext'
 
 function Footer() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const { theme, mode } = useTheme()
 
   useEffect(() => {
     const handle = () => setIsMobile(window.innerWidth < 768)
@@ -12,13 +14,16 @@ function Footer() {
 
   return (
     <footer style={{
-      borderTop: '1px solid #2a3a50',
-      backgroundImage: 'url(/footer.png)',
+      borderTop: `1px solid ${theme.border}`,
+      backgroundImage: mode === 'dark' ? 'url(/footer.png)' : 'none',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      position: 'relative'
+      position: 'relative',
+      background: mode === 'light' ? theme.surface : undefined
     }}>
-      <div style={{ position: 'absolute', inset: 0, background: '#1E293Bcc' }} />
+      {mode === 'dark' && (
+        <div style={{ position: 'absolute', inset: 0, background: '#1E293Bcc' }} />
+      )}
 
       <div style={{
         position: 'relative', maxWidth: '1400px',
@@ -31,30 +36,28 @@ function Footer() {
           marginBottom: '2rem'
         }}>
 
-          {/* ლოგო */}
           <div>
             <img src="/xpc-logo.png" alt="XPC" style={{ height: '46px', objectFit: 'contain', marginBottom: '1rem' }} />
-            <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.8', maxWidth: '280px' }}>
+            <p style={{ fontSize: '13px', color: theme.muted, lineHeight: '1.8', maxWidth: '280px' }}>
               კომპიუტერის ნაწილების და სრული კომპიუტერების მაღაზია. ხარისხიანი პროდუქტი, სწრაფი მიწოდება.
             </p>
             <div style={{ display: 'flex', gap: '10px', marginTop: '1.5rem' }}>
               {['FB', 'IG', 'YT', 'TG'].map(s => (
                 <div key={s} style={{
                   width: '36px', height: '36px', borderRadius: '8px',
-                  background: '#0F172A', border: '1px solid #2a3a50',
+                  background: theme.input, border: `1px solid ${theme.border}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '11px', fontWeight: '700', color: '#94A3B8', cursor: 'pointer'
+                  fontSize: '11px', fontWeight: '700', color: theme.muted, cursor: 'pointer'
                 }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = '#F59E0B'; e.currentTarget.style.color = '#F59E0B' }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a3a50'; e.currentTarget.style.color = '#94A3B8' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = theme.border; e.currentTarget.style.color = theme.muted }}
                 >{s}</div>
               ))}
             </div>
           </div>
 
-          {/* სწრაფი ლინკები */}
           <div>
-            <div style={{ fontSize: '14px', fontWeight: '700', color: '#fff', letterSpacing: '1px', marginBottom: '1.2rem' }}>
+            <div style={{ fontSize: '14px', fontWeight: '700', color: theme.text, letterSpacing: '1px', marginBottom: '1.2rem' }}>
               სწრაფი ლინკები
             </div>
             {[
@@ -65,18 +68,17 @@ function Footer() {
               { to: '/contact', label: 'კონტაქტი' },
             ].map(l => (
               <Link key={l.to} to={l.to} style={{
-                display: 'block', fontSize: '13px', color: '#94A3B8',
+                display: 'block', fontSize: '13px', color: theme.muted,
                 textDecoration: 'none', marginBottom: '10px'
               }}
                 onMouseEnter={e => e.currentTarget.style.color = '#F59E0B'}
-                onMouseLeave={e => e.currentTarget.style.color = '#94A3B8'}
+                onMouseLeave={e => e.currentTarget.style.color = theme.muted}
               >{l.label}</Link>
             ))}
           </div>
 
-          {/* კონტაქტი */}
           <div>
-            <div style={{ fontSize: '14px', fontWeight: '700', color: '#fff', letterSpacing: '1px', marginBottom: '1.2rem' }}>
+            <div style={{ fontSize: '14px', fontWeight: '700', color: theme.text, letterSpacing: '1px', marginBottom: '1.2rem' }}>
               კონტაქტი
             </div>
             {[
@@ -87,7 +89,7 @@ function Footer() {
             ].map(item => (
               <div key={item.text} style={{
                 display: 'flex', gap: '10px',
-                fontSize: '13px', color: '#94A3B8', marginBottom: '12px'
+                fontSize: '13px', color: theme.muted, marginBottom: '12px'
               }}>
                 <span>{item.icon}</span>
                 <span>{item.text}</span>
@@ -99,8 +101,8 @@ function Footer() {
         <div style={{
           display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px',
-          paddingTop: '1.5rem', borderTop: '1px solid #2a3a50',
-          fontSize: '12px', color: '#94A3B8'
+          paddingTop: '1.5rem', borderTop: `1px solid ${theme.border}`,
+          fontSize: '12px', color: theme.muted
         }}>
           <div>© 2025 XPC · ყველა უფლება დაცულია</div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>

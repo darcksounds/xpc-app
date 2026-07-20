@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getProducts } from '../sanity/queries'
+import { useTheme } from '../context/ThemeContext'
 
 const STEPS = [
   { key: 'cpu', label: 'პროცესორი', category: 'პროცესორი', icon: '🖥️' },
@@ -38,6 +39,7 @@ function checkCompatibility(selected) {
 }
 
 function Configurator() {
+  const { theme } = useTheme()
   const [products, setProducts] = useState([])
   const [selected, setSelected] = useState({})
   const [activeStep, setActiveStep] = useState(null)
@@ -77,10 +79,10 @@ function Configurator() {
 
   const Summary = () => (
     <div style={{
-      background: '#1E293B', border: '1px solid #2a3a50',
+      background: theme.surface, border: `1px solid ${theme.border}`,
       borderRadius: '12px', padding: '1.5rem'
     }}>
-      <div style={{ fontSize: '16px', fontWeight: '700', color: '#fff', marginBottom: '1.5rem' }}>
+      <div style={{ fontSize: '16px', fontWeight: '700', color: theme.text, marginBottom: '1.5rem' }}>
         კონფიგურაციის ჯამი
       </div>
 
@@ -101,10 +103,10 @@ function Configurator() {
         {STEPS.map(step => (
           <div key={step.key} style={{
             display: 'flex', justifyContent: 'space-between',
-            padding: '8px 0', borderBottom: '1px solid #2a3a50', fontSize: '12px'
+            padding: '8px 0', borderBottom: `1px solid ${theme.border}`, fontSize: '12px'
           }}>
-            <span style={{ color: '#94A3B8' }}>{step.label}</span>
-            <span style={{ color: selected[step.key] ? '#fff' : '#444', fontWeight: selected[step.key] ? '500' : '400' }}>
+            <span style={{ color: theme.muted }}>{step.label}</span>
+            <span style={{ color: selected[step.key] ? theme.text : theme.muted, fontWeight: selected[step.key] ? '500' : '400' }}>
               {selected[step.key] ? `${selected[step.key].price} ₾` : '—'}
             </span>
           </div>
@@ -113,18 +115,18 @@ function Configurator() {
 
       {totalTdp > 100 && (
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', marginBottom: '8px', fontSize: '12px' }}>
-          <span style={{ color: '#94A3B8' }}>სავარაუდო სიმძლავრე</span>
+          <span style={{ color: theme.muted }}>სავარაუდო სიმძლავრე</span>
           <span style={{ color: '#F59E0B' }}>~{totalTdp}W</span>
         </div>
       )}
 
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '1rem 0', borderTop: '1px solid #2a3a50', marginBottom: '1rem'
+        padding: '1rem 0', borderTop: `1px solid ${theme.border}`, marginBottom: '1rem'
       }}>
-        <span style={{ fontSize: '14px', color: '#94A3B8' }}>სულ</span>
-        <span style={{ fontSize: '28px', fontWeight: '800', color: '#fff' }}>
-          {totalPrice.toFixed(2)} <span style={{ fontSize: '14px', color: '#94A3B8' }}>₾</span>
+        <span style={{ fontSize: '14px', color: theme.muted }}>სულ</span>
+        <span style={{ fontSize: '28px', fontWeight: '800', color: theme.text }}>
+          {totalPrice.toFixed(2)} <span style={{ fontSize: '14px', color: theme.muted }}>₾</span>
         </span>
       </div>
 
@@ -132,9 +134,9 @@ function Configurator() {
         disabled={selectedCount === 0 || errors.length > 0}
         style={{
           width: '100%', padding: '14px',
-          background: selectedCount === 0 || errors.length > 0 ? '#2a3a50' : '#F59E0B',
+          background: selectedCount === 0 || errors.length > 0 ? theme.border : '#F59E0B',
           border: 'none', borderRadius: '10px',
-          color: selectedCount === 0 || errors.length > 0 ? '#94A3B8' : '#000',
+          color: selectedCount === 0 || errors.length > 0 ? theme.muted : '#000',
           fontSize: '15px', fontWeight: '700',
           cursor: selectedCount === 0 || errors.length > 0 ? 'not-allowed' : 'pointer',
           transition: 'all .2s'
@@ -146,8 +148,8 @@ function Configurator() {
           onClick={() => setSelected({})}
           style={{
             width: '100%', padding: '10px', marginTop: '8px',
-            background: 'transparent', border: '1px solid #2a3a50',
-            borderRadius: '8px', color: '#94A3B8', fontSize: '13px', cursor: 'pointer'
+            background: 'transparent', border: `1px solid ${theme.border}`,
+            borderRadius: '8px', color: theme.muted, fontSize: '13px', cursor: 'pointer'
           }}
         >გასუფთავება</button>
       )}
@@ -155,28 +157,28 @@ function Configurator() {
   )
 
   return (
-    <div style={{ flex: 1, background: '#0F172A', padding: '2rem 0' }}>
+    <div style={{ flex: 1, background: theme.bg, padding: '2rem 0' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 1.5rem' }}>
 
         {/* header */}
         <div style={{
-          background: '#1E293B', border: '1px solid #2a3a50',
+          background: theme.surface, border: `1px solid ${theme.border}`,
           borderRadius: '12px', padding: '1.5rem',
           marginBottom: '1.5rem'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
             <div>
-              <h1 style={{ fontSize: isMobile ? '18px' : '24px', fontWeight: '700', color: '#fff', marginBottom: '4px' }}>
+              <h1 style={{ fontSize: isMobile ? '18px' : '24px', fontWeight: '700', color: theme.text, marginBottom: '4px' }}>
                 PC კონფიგურატორი
               </h1>
               {!isMobile && (
-                <p style={{ fontSize: '13px', color: '#94A3B8' }}>
+                <p style={{ fontSize: '13px', color: theme.muted }}>
                   ააწყვე შენი კომპიუტერი — კომპატიბილობა ავტომატურად შემოწმდება
                 </p>
               )}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ fontSize: '13px', color: '#94A3B8' }}>
+              <div style={{ fontSize: '13px', color: theme.muted }}>
                 <span style={{ color: '#F59E0B', fontWeight: '700', fontSize: '20px' }}>{selectedCount}</span>
                 <span> / {STEPS.length}</span>
               </div>
@@ -194,7 +196,7 @@ function Configurator() {
               )}
             </div>
           </div>
-          <div style={{ height: '4px', background: '#0F172A', borderRadius: '2px', marginTop: '1rem' }}>
+          <div style={{ height: '4px', background: theme.bg, borderRadius: '2px', marginTop: '1rem' }}>
             <div style={{
               height: '100%', borderRadius: '2px', background: '#F59E0B',
               width: `${(selectedCount / STEPS.length) * 100}%`, transition: 'width .3s'
@@ -219,8 +221,8 @@ function Configurator() {
             {STEPS.map(step => (
               <div key={step.key}>
                 <div style={{
-                  background: '#1E293B',
-                  border: `1px solid ${selected[step.key] ? '#F59E0B40' : '#2a3a50'}`,
+                  background: theme.surface,
+                  border: `1px solid ${selected[step.key] ? '#F59E0B40' : theme.border}`,
                   borderRadius: '12px', overflow: 'hidden'
                 }}>
                   <div style={{
@@ -232,7 +234,7 @@ function Configurator() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
                       <span style={{ fontSize: '20px', flexShrink: 0 }}>{step.icon}</span>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: isMobile ? '13px' : '15px', fontWeight: '600', color: '#fff' }}>
+                        <div style={{ fontSize: isMobile ? '13px' : '15px', fontWeight: '600', color: theme.text }}>
                           {step.label}
                         </div>
                         {selected[step.key] ? (
@@ -243,7 +245,7 @@ function Configurator() {
                             ✓ {selected[step.key].name} — {selected[step.key].price} ₾
                           </div>
                         ) : (
-                          <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+                          <div style={{ fontSize: '11px', color: theme.muted, marginTop: '2px' }}>
                             არ არის არჩეული
                           </div>
                         )}
@@ -260,18 +262,18 @@ function Configurator() {
                           }}
                         >წაშლა</button>
                       )}
-                      <span style={{ color: '#94A3B8', fontSize: '16px' }}>
+                      <span style={{ color: theme.muted, fontSize: '16px' }}>
                         {activeStep === step.key ? '▲' : '▼'}
                       </span>
                     </div>
                   </div>
 
                   {activeStep === step.key && (
-                    <div style={{ borderTop: '1px solid #2a3a50', padding: '1rem' }}>
+                    <div style={{ borderTop: `1px solid ${theme.border}`, padding: '1rem' }}>
                       {loading ? (
-                        <div style={{ color: '#94A3B8', textAlign: 'center', padding: '1rem' }}>იტვირთება...</div>
+                        <div style={{ color: theme.muted, textAlign: 'center', padding: '1rem' }}>იტვირთება...</div>
                       ) : getStepProducts(step).length === 0 ? (
-                        <div style={{ color: '#94A3B8', textAlign: 'center', padding: '1rem' }}>პროდუქტი არ მოიძებნა</div>
+                        <div style={{ color: theme.muted, textAlign: 'center', padding: '1rem' }}>პროდუქტი არ მოიძებნა</div>
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                           {getStepProducts(step).map(p => (
@@ -280,14 +282,14 @@ function Configurator() {
                               style={{
                                 display: 'flex', alignItems: 'center', gap: '10px',
                                 padding: '10px', borderRadius: '8px', cursor: 'pointer',
-                                background: selected[step.key]?._id === p._id ? '#F59E0B15' : '#0F172A',
-                                border: `1px solid ${selected[step.key]?._id === p._id ? '#F59E0B40' : '#2a3a50'}`,
+                                background: selected[step.key]?._id === p._id ? '#F59E0B15' : theme.bg,
+                                border: `1px solid ${selected[step.key]?._id === p._id ? '#F59E0B40' : theme.border}`,
                                 transition: 'all .2s'
                               }}
                             >
                               <div style={{
                                 width: '44px', height: '44px', borderRadius: '8px',
-                                background: '#1E293B', overflow: 'hidden', flexShrink: 0
+                                background: theme.card, overflow: 'hidden', flexShrink: 0
                               }}>
                                 {p.images?.[0]
                                   ? <img src={p.images[0]} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -297,11 +299,11 @@ function Configurator() {
                               <div style={{ flex: 1, minWidth: 0 }}>
                                 <div style={{ fontSize: '11px', color: '#F59E0B', marginBottom: '2px' }}>{p.brand}</div>
                                 <div style={{
-                                  fontSize: '12px', color: '#fff', lineHeight: '1.3',
+                                  fontSize: '12px', color: theme.text, lineHeight: '1.3',
                                   overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                                 }}>{p.name}</div>
                               </div>
-                              <div style={{ fontSize: '14px', fontWeight: '700', color: '#fff', flexShrink: 0 }}>
+                              <div style={{ fontSize: '14px', fontWeight: '700', color: theme.text, flexShrink: 0 }}>
                                 {p.price} ₾
                               </div>
                             </div>
